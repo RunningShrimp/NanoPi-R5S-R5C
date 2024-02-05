@@ -96,7 +96,7 @@ jobs:
       run: |
         cd $OPENWRTROOT
         cat .config
-        make download -j8
+        make -j8 download V=s
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
   
@@ -105,12 +105,12 @@ jobs:
       run: |
         cd $OPENWRTROOT
         echo -e "$(nproc) thread compile"
-        make tools/compile -j$(nproc) || make tools/compile -j$(nproc)
-        make toolchain/compile -j$(nproc) || make toolchain/compile -j$(nproc)
-        make target/compile -j$(nproc) || make target/compile -j$(nproc) IGNORE_ERRORS=1
-        make diffconfig
-        make package/compile -j$(nproc) IGNORE_ERRORS=1 || make package/compile -j$(nproc) IGNORE_ERRORS=1
-        make package/index
+        make tools/compile -j$(nproc) V=s || make tools/compile -j$(nproc) V=s
+        make toolchain/compile -j$(nproc) V=s || make toolchain/compile -j$(nproc) V=s
+        make target/compile -j$(nproc) V=s || make target/compile -j$(nproc) IGNORE_ERRORS=1 V=s
+        make diffconfig V=s
+        make package/compile -j$(nproc) IGNORE_ERRORS=1  V=s || make package/compile -j$(nproc) IGNORE_ERRORS=1 V=s
+        make package/index V=s
         cd $OPENWRTROOT/bin/packages/*
         PLATFORM=$(basename `pwd`)
         echo "PLATFORM=$PLATFORM" >> $GITHUB_ENV
