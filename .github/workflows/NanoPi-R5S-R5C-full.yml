@@ -15,6 +15,9 @@ on:
     #- cron: 0 17 * * *
   # watch:
   #   types: started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   REPO_URL: https://github.com/DHDAXCW/lede-rockchip
